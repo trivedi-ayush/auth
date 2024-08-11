@@ -16,17 +16,10 @@ exports.signup = async (req, res) => {
     user = new User({ name, email, password });
     await user.save();
 
-    const accessToken = generateToken(user._id);
-    const refreshToken = generateToken(user._id, "refresh");
-
-    res
-      .status(201)
-      .json({
-        msg: "user successfully registered",
-        user,
-        accessToken,
-        refreshToken,
-      });
+    res.status(201).json({
+      msg: "user successfully registered",
+      user,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
@@ -136,7 +129,9 @@ exports.resetPassword = async (req, res) => {
     const accessToken = generateToken(user._id);
     const refreshToken = generateToken(user._id, "refresh");
 
-    res.status(200).json({ accessToken, refreshToken });
+    res
+      .status(200)
+      .json({ msg: "password reset successful", accessToken, refreshToken });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
